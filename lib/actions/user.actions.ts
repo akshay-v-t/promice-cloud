@@ -7,6 +7,8 @@ import { parseStringify } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { url } from "inspector";
+import { avatarPlaceholderUrl } from "@/constants";
+import { parse } from "path";
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -59,7 +61,7 @@ export const createAccount = async ({
       {
         fullName,
         email,
-        avatar: '/public/file.svg',
+        avatar: avatarPlaceholderUrl,
         accountId,
       },
     );
@@ -141,3 +143,4 @@ export const signInUser = async ({ email }: { email: string }) => {
     handleError(error, "Failed to sign in user");
   }
 };
+
