@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Image from 'next/image'
 import Link from 'next/link'
-import { createAccount } from '@/lib/actions/user.actions'
+import { createAccount, signInUser } from '@/lib/actions/user.actions'
 import OTPModal from './OTPModal'
 
 
@@ -55,25 +55,20 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsloading(true) ;
     setErrorMessage("")
 
-    try{
-      const user =await createAccount({
-      fullName: values.fullName || "",
-      email: values.email,
+     try {
+      const user =
+        type === "sign-up"
+          ? await createAccount({
+              fullName: values.fullName || "",
+              email: values.email,
+            })
+          : await signInUser({ email: values.email });
 
-      }
-
-    );
-        setAccountId(user.accountId)
-
-
-    }catch{
-
-     setErrorMessage('Failed to create an account. Please try again')
-
-    }finally{
-
-      setIsloading(false)
-
+      setAccountId(user.accountId);
+    } catch {
+      setErrorMessage("Failed to create account. Please try again.");
+    } finally {
+      setIsloading(false);
     }
 
     
